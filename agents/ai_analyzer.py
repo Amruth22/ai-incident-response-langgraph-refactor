@@ -17,7 +17,7 @@ class AIAnalyzer:
     
     def __init__(self):
         api_key = get_config_value("GEMINI_API_KEY", "")
-        model_name = get_config_value("GEMINI_MODEL", "gemini-2.0-flash-exp")
+        model_name = get_config_value("GEMINI_MODEL", "gemini-2.0-flash")
         
         if not api_key:
             logger.warning("Gemini API key not configured")

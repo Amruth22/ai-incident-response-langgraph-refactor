@@ -19,7 +19,7 @@ DEFAULT_CONFIG = {
     
     # Gemini AI Configuration
     "GEMINI_API_KEY": "",
-    "GEMINI_MODEL": "gemini-2.0-flash-exp",
+    "GEMINI_MODEL": "gemini-2.0-flash",
     
     # System Thresholds
     "CONFIDENCE_THRESHOLD": 0.8,
