@@ -1,0 +1,12 @@
+# LangGraph and LangChain
+langgraph>=0.2.0
+langchain-core>=0.3.0
+
+# Google Gemini AI
+google-generativeai>=0.3.0
+
+# Configuration
+python-dotenv>=0.15.0
+
+# Testing (optional)
+pytest>=6.0.0
