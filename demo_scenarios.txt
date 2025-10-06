@@ -1,0 +1,43 @@
+# Demo Incident Scenarios
+
+## Scenario 1: Database Timeout (High Confidence)
+Alert: Payment API experiencing database connection timeouts and high error rates
+Expected: Auto-mitigation
+Reason: Clear symptoms, similar historical incidents, high confidence
+
+## Scenario 2: Memory Leak (Medium Confidence)
+Alert: Auth Service showing memory leak patterns and degraded performance
+Expected: May escalate depending on analysis
+Reason: Memory issues can be complex, confidence may vary
+
+## Scenario 3: Network Issues (Complex)
+Alert: Load balancer reporting uneven traffic distribution and connection failures
+Expected: Likely escalation
+Reason: Network issues often require manual investigation
+
+## Scenario 4: Unknown Service (Low Confidence)
+Alert: Critical system failure in unknown microservice with no clear symptoms
+Expected: Definite escalation
+Reason: Unknown service, unclear symptoms, no historical data
+
+## Scenario 5: API Rate Limiting
+Alert: API Gateway experiencing rate limit exceeded errors from multiple clients
+Expected: Auto-mitigation
+Reason: Common issue with known solutions
+
+## Scenario 6: Cache Invalidation
+Alert: Auth Service slow response times due to cache invalidation storm
+Expected: Auto-mitigation
+Reason: Known pattern with proven solutions
+
+## Usage
+
+Run any scenario with:
+```bash
+python main.py "Alert text here"
+```
+
+Or use demo mode:
+```bash
+python main.py --demo
+```
