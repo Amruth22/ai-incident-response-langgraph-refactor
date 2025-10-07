@@ -214,6 +214,117 @@ class LogAnalyzer:
 
 ## Workflow Execution Flow
 
+### Visual Workflow Diagram
+
+```mermaid
+graph TD
+    %% Entry Point
+    START([🚀 Incident Alert Received]) --> TRIGGER[🔔 Incident Trigger Agent]
+    
+    %% Incident Parsing and Setup
+    TRIGGER --> |"AI-Powered Alert Parsing<br/>Extract Service & Severity<br/>Send Initial Alert Email"| PARALLEL{"🎯 Launch Parallel Analysis"}
+    
+    %% TRUE Parallel Agent Execution (All 3 agents run simultaneously)
+    PARALLEL --> |"Simultaneously"| LOG_ANALYSIS[📊 Log Analysis Agent]
+    PARALLEL --> |"Simultaneously"| KNOWLEDGE[📚 Knowledge Lookup Agent]
+    PARALLEL --> |"Simultaneously"| ROOT_CAUSE[🔍 Root Cause Agent]
+    
+    %% Agent Specializations and Results
+    LOG_ANALYSIS --> |"Detect Anomalies<br/>Pattern Matching<br/>Retry Logic (Max 3)"| LOG_RESULT[📊 Log Analysis Results<br/>Anomalies: Found/Not Found<br/>Patterns: CPU, Memory, Network<br/>Retry Count: 0-3]
+    
+    KNOWLEDGE --> |"Search Historical DB<br/>8 Past Incidents<br/>Solution Matching"| KNOWLEDGE_RESULT[📚 Knowledge Results<br/>Similar Incidents: 0-8<br/>Solutions Found: Yes/No<br/>Confidence: 0.0-1.0]
+    
+    ROOT_CAUSE --> |"Gemini AI Analysis<br/>Context Integration<br/>Confidence Scoring"| ROOT_RESULT[🔍 Root Cause Results<br/>Root Cause: Identified<br/>Confidence: 0.0-1.0<br/>Recommendations: List]
+    
+    %% Agent Coordination
+    LOG_RESULT --> COORDINATOR[🎯 Agent Coordinator]
+    KNOWLEDGE_RESULT --> COORDINATOR
+    ROOT_RESULT --> COORDINATOR
+    
+    %% Coordination Logic
+    COORDINATOR --> |"All 3 Agents Complete?"| CHECK{"✅ All Agents<br/>Completed?"}
+    CHECK --> |"No - Wait"| WAIT[⏳ Wait for<br/>Remaining Agents]
+    WAIT --> CHECK
+    CHECK --> |"Yes - Proceed"| SUMMARY[📋 Generate<br/>Multi-Agent Summary]
+    
+    %% Decision Making with Multi-Factor Criteria
+    SUMMARY --> DECISION{"⚖️ Decision Maker<br/>Multi-Factor Analysis"}
+    
+    %% Multi-Dimensional Decision Matrix
+    DECISION --> |"Retry Count ≥ 3<br/>No Anomalies After Retries"| ESCALATE_RETRY[🔴 Escalation<br/>Max Retries Reached]
+    DECISION --> |"No Anomalies Found<br/>Log Analysis Failed"| ESCALATE_LOGS[🔴 Escalation<br/>No Anomalies Detected]
+    DECISION --> |"Confidence < 0.8<br/>Uncertain Root Cause"| ESCALATE_CONF[🔴 Escalation<br/>Low AI Confidence]
+    DECISION --> |"No Similar Incidents<br/>No Historical Guidance"| ESCALATE_HIST[🔴 Escalation<br/>Unknown Pattern]
+    DECISION --> |"All Criteria Met<br/>High Confidence ≥ 0.8"| AUTO_MITIGATE[✅ Auto-Mitigation<br/>Execute Solution]
+    
+    %% Action Paths
+    AUTO_MITIGATE --> MITIGATION[🔧 Mitigation Agent<br/>Execute Automated Solution]
+    ESCALATE_RETRY --> ESCALATION[🚨 Escalation Agent<br/>Human Intervention Required]
+    ESCALATE_LOGS --> ESCALATION
+    ESCALATE_CONF --> ESCALATION
+    ESCALATE_HIST --> ESCALATION
+    
+    %% Mitigation Actions
+    MITIGATION --> |"Apply Solution<br/>Restart Service<br/>Clear Cache<br/>Scale Resources"| MITIGATION_RESULT[🔧 Mitigation Results<br/>Actions Taken: List<br/>Status: Success/Failure<br/>Timestamp: Recorded]
+    
+    %% Escalation Actions
+    ESCALATION --> |"Create Ticket<br/>Notify On-Call<br/>Provide Context<br/>Escalation Reason"| ESCALATION_RESULT[🚨 Escalation Results<br/>Ticket ID: Created<br/>On-Call: Notified<br/>Reason: Documented]
+    
+    %% Communication and Reporting
+    MITIGATION_RESULT --> COMMUNICATOR[📧 Communicator Agent<br/>Final Report Generation]
+    ESCALATION_RESULT --> COMMUNICATOR
+    
+    %% Email Notifications Throughout Workflow
+    TRIGGER --> EMAIL1[📧 Incident Alert Email]
+    LOG_RESULT --> EMAIL2[📧 Log Analysis Complete]
+    KNOWLEDGE_RESULT --> EMAIL3[📧 Knowledge Search Complete]
+    ROOT_RESULT --> EMAIL4[📧 Root Cause Identified]
+    MITIGATION_RESULT --> EMAIL5[📧 Mitigation Applied]
+    ESCALATION_RESULT --> EMAIL6[📧 Escalation Notice]
+    COMMUNICATOR --> EMAIL7[📧 Final Status Report]
+    
+    %% Final Report Generation
+    COMMUNICATOR --> |"Aggregate All Results<br/>Generate Summary<br/>Include Metrics"| FINAL_REPORT[📄 Final Report<br/>Incident Summary<br/>Actions Taken<br/>Resolution Status]
+    
+    %% Final States
+    FINAL_REPORT --> END_SUCCESS([🟢 INCIDENT RESOLVED<br/>Auto-Mitigation Successful])
+    FINAL_REPORT --> END_ESCALATED([🟡 INCIDENT ESCALATED<br/>Human Review Required])
+    
+    %% Error Handling
+    TRIGGER --> |"Error"| ERROR[❌ Error Handler]
+    LOG_ANALYSIS --> |"Error"| ERROR
+    KNOWLEDGE --> |"Error"| ERROR
+    ROOT_CAUSE --> |"Error"| ERROR
+    COORDINATOR --> |"Error"| ERROR
+    MITIGATION --> |"Error"| ERROR
+    ESCALATION --> |"Error"| ERROR
+    ERROR --> END_ERROR([🔴 WORKFLOW ERROR<br/>System Failure])
+    
+    %% Retry Logic for Log Analysis
+    LOG_ANALYSIS --> |"No Anomalies & Retry < 3"| RETRY_LOG[🔄 Retry Log Analysis]
+    RETRY_LOG --> LOG_ANALYSIS
+    
+    %% Styling with Black Text
+    classDef agentNode fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000000
+    classDef resultNode fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000000
+    classDef decisionNode fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000000
+    classDef escalationNode fill:#ffebee,stroke:#c62828,stroke-width:3px,color:#000000
+    classDef mitigationNode fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,color:#000000
+    classDef errorNode fill:#fce4ec,stroke:#ad1457,stroke-width:2px,color:#000000
+    classDef emailNode fill:#fff9c4,stroke:#f57f17,stroke-width:1px,color:#000000
+    classDef defaultNode fill:#f9f9f9,stroke:#333333,stroke-width:2px,color:#000000
+    classDef successNode fill:#c8e6c9,stroke:#1b5e20,stroke-width:2px,color:#000000
+    
+    class LOG_ANALYSIS,KNOWLEDGE,ROOT_CAUSE agentNode
+    class LOG_RESULT,KNOWLEDGE_RESULT,ROOT_RESULT,MITIGATION_RESULT,ESCALATION_RESULT,FINAL_REPORT resultNode
+    class DECISION,CHECK decisionNode
+    class ESCALATE_RETRY,ESCALATE_LOGS,ESCALATE_CONF,ESCALATE_HIST,ESCALATION,END_ESCALATED escalationNode
+    class AUTO_MITIGATE,MITIGATION,END_SUCCESS mitigationNode
+    class ERROR,END_ERROR errorNode
+    class EMAIL1,EMAIL2,EMAIL3,EMAIL4,EMAIL5,EMAIL6,EMAIL7 emailNode
+    class START,TRIGGER,PARALLEL,COORDINATOR,SUMMARY,WAIT,COMMUNICATOR,RETRY_LOG defaultNode
+```
+
 ### Detailed Flow Diagram
 
 ```
